@@ -233,23 +233,25 @@ export const DataCommand: FC<{
         }
       }}
     >
-      <div className="flex gap-1 p-1 items-center border-b">
-        <SearchIcon className="ml-2 text-gray-500 size-4" />
-        {refinedChain.chain.map((i, idx) => (
-          <Fragment key={i.value}>
-            <Badge
-              onClick={() =>
-                setCommandChainKeys((prev) => prev.slice(0, idx + 1))
-              }
-              className="cursor-pointer"
-              variant="secondary"
-            >
-              {i.icon}
-              {i.label}
-            </Badge>
-            <ChevronRightIcon className="text-gray-500" />
-          </Fragment>
-        ))}
+      <div className="flex gap-1 p-1 items-center border-b flex-wrap">
+        <div className="flex items-center gap-2 overflow-auto">
+          <SearchIcon className="ml-2 text-gray-500 size-4" />
+          {refinedChain.chain.map((i, idx) => (
+            <Fragment key={i.value}>
+              <Badge
+                onClick={() =>
+                  setCommandChainKeys((prev) => prev.slice(0, idx + 1))
+                }
+                className="cursor-pointer"
+                variant="secondary"
+              >
+                {i.icon}
+                {i.label}
+              </Badge>
+              <ChevronRightIcon className="text-gray-500" />
+            </Fragment>
+          ))}
+        </div>
         <CommandInput
           value={search}
           onValueChange={setSearch}
@@ -263,7 +265,7 @@ export const DataCommand: FC<{
               setSearch("");
               setCommandChainKeys([]);
             }}
-            className="ml-auto size-4 mr-3 z-20 text-gray-500 hover:text-white cursor-pointer"
+            className="ml-auto size-4 z-20 text-gray-500 hover:text-white cursor-pointer absolute top-4 right-4"
           />
         )}
       </div>
