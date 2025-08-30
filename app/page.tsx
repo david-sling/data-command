@@ -10,17 +10,21 @@ import apiExample from "@/public/r/api-example-data-command.json";
 import dataCommand from "@/public/r/data-command.json";
 import defaultChainExample from "@/public/r/default-chain-example-data-command.json";
 import simpleExample from "@/public/r/simple-example-data-command.json";
+import { Logo } from "@/components/logo";
 
 // This page displays items from the custom registry.
 // You are free to implement this with your own design as needed.
 
 export default function Home() {
   return (
-    <div className="max-w-3xl mx-auto flex flex-col min-h-svh px-4 py-8 gap-8">
+    <div className="max-w-3xl mx-auto flex flex-col min-h-svh px-4 py-4 md:py-8 gap-8">
       <header className="flex flex-col gap-1">
-        <h1 className="text-2xl md:text-4xl font-bold tracking-tight break-words flex-1 max-w-full">
-          {"<DataCommand/>"}
-        </h1>
+        <div className="flex items-center gap-2.5 md:gap-5">
+          <Logo className="h-10 md:h-20 w-10 md:w-20 -ml-2.5 md:-ml-5" />
+          <h1 className="text-2xl md:text-4xl font-bold tracking-tight break-words flex-1 max-w-full">
+            {"<DataCommand/>"}
+          </h1>
+        </div>
         <p className="text-muted-foreground">
           A data-driven command component built on top of <code>shadcn/ui</code>
           .
