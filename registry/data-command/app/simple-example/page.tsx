@@ -20,7 +20,7 @@ export default function SimpleExample() {
               icon: <User />,
               label: "Profile",
               value: "profile",
-              fetchSubItems: async () => [
+              loadItems: async () => [
                 {
                   label: "Settings",
                   value: "settings",

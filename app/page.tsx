@@ -44,7 +44,7 @@ export default function Home() {
 
         <Example
           label="Populating command items from an API"
-          description="You can populate items from an API call using the `fetchSubItems` function. Here is an example with a simulated API call:"
+          description="You can populate items from an API call using the `loadItems` function. Here is an example with a simulated API call:"
           name={apiExample.name}
           code={getMainRegistryFile(apiExample as RegistryItem) ?? ""}
         >
@@ -53,7 +53,7 @@ export default function Home() {
 
         <Example
           label="Opening with a prefilled chain before API call"
-          description="You can open the data-command component with the chain prefilled even if the api calls for fetching the lists haven't been made yet. If you wish to not make a call to your list API, you can use the `fetchOneSubItem` function. This will be invoked if there is no necessity to invoke the `fetchSubItems` function. You also need to pass in the `defaultCommandChain` prop"
+          description="You can open the data-command component with the chain prefilled even if the api calls for fetching the lists haven't been made yet. If you wish to not make a call to your list API, you can use the `loadOneItem` function. This will be invoked if there is no necessity to invoke the `loadItems` function. You also need to pass in the `defaultPath` prop"
           name={defaultChainExample.name}
           code={getMainRegistryFile(defaultChainExample as RegistryItem) ?? ""}
         >

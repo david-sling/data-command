@@ -10,7 +10,7 @@ const parseProject = (project: Project): CommandDataItem => ({
   label: project.name,
   value: project.id,
   icon: <Folder />,
-  fetchSubItems: async () =>
+  loadItems: async () =>
     project.files.map((file) => ({
       label: file,
       value: file,
@@ -33,18 +33,18 @@ export default function DefaultChainExample() {
               icon: <Folder />,
               label: "Projects",
               value: "projects",
-              fetchSubItems: async ({ search }) => {
+              loadItems: async ({ search }) => {
                 const projects = await fetchProjects(search);
                 return projects.map(parseProject);
               },
-              fetchOneSubItem: async (projectId) => {
+              loadOneItem: async (projectId) => {
                 const project = await fetchOneProject(projectId);
                 return parseProject(project);
               },
               onSelect: () => alert("Redirect to projects page"),
             },
           ]}
-          defaultCommandChain={["projects", "project_2"]}
+          defaultPath={["projects", "project_2"]}
         />
       </DialogContent>
     </Dialog>

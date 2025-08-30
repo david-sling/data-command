@@ -27,11 +27,11 @@ export type FetchCommandDataSubItems = (_props: {
 export interface CommandDataItem {
   label: ReactNode;
   value: string;
-  fetchSubItems?: FetchCommandDataSubItems;
-  fetchOneSubItem?: (_key: string) => Promise<CommandDataItem>;
+  loadItems?: FetchCommandDataSubItems;
+  loadOneItem?: (_key: string) => Promise<CommandDataItem>;
   onSelect?: () => void;
   icon?: ReactNode;
-  searchPlaceHolder?: string;
+  searchPlaceholder?: string;
 }
 
 export interface CommandHistoryItem {
@@ -43,11 +43,11 @@ export interface CommandHistoryItem {
 export const DataCommand: FC<{
   items: CommandDataItem[];
   onClose?: () => void;
-  defaultCommandChain?: string[];
-}> = ({ items, onClose, defaultCommandChain = [] }) => {
+  defaultPath?: string[];
+}> = ({ items, onClose, defaultPath = [] }) => {
   const listRef = useRef<ComponentRef<typeof CommandList> | null>(null);
   const [commandChainKeys, setCommandChainKeys] =
-    useState<string[]>(defaultCommandChain);
+    useState<string[]>(defaultPath);
   const [search, setSearch] = useState("");
   const fetching = useRef(new Map<string, boolean | undefined>());
   const [commandHistory, setCommandHistory] = useState<
@@ -95,7 +95,7 @@ export const DataCommand: FC<{
 
           if (!currentItem) {
             if (
-              lastItem?.fetchOneSubItem &&
+              lastItem?.loadOneItem &&
               !commandHistory[prevKey] &&
               !fetching.current.get(prevKey)
             ) {
@@ -104,7 +104,7 @@ export const DataCommand: FC<{
                 value: { isLoading: true, fetch_type: "one" },
               });
               lastItem
-                .fetchOneSubItem(curr)
+                .loadOneItem(curr)
                 .then((item) => {
                   const address = addCommandItemToMap(chainKey, item);
                   appendCommandHistory({
@@ -143,17 +143,17 @@ export const DataCommand: FC<{
             : chainKey;
 
           if (
-            currentItem.fetchSubItems &&
+            currentItem.loadItems &&
             !(commandHistory[key]?.fetch_type === "list") &&
             !fetching.current.get(key) &&
-            (isLastItem || !currentItem.fetchOneSubItem)
+            (isLastItem || !currentItem.loadOneItem)
           ) {
             appendCommandHistory({
               key,
               value: { isLoading: true, fetch_type: "list" },
             });
             currentItem
-              .fetchSubItems({ search })
+              .loadItems({ search })
               .then((children) => {
                 const childAddresses = addComandItemsToMap(chainKey, children);
                 appendCommandHistory({
@@ -204,7 +204,7 @@ export const DataCommand: FC<{
           (i) => i?.value === currentFocusName
         );
 
-        if (e.key === "Tab" && currentFocus?.fetchSubItems) {
+        if (e.key === "Tab" && currentFocus?.loadItems) {
           e.preventDefault();
           setCommandChainKeys((prev) => [...prev, currentFocus.value]);
           setSearch("");
@@ -244,7 +244,7 @@ export const DataCommand: FC<{
           value={search}
           onValueChange={setSearch}
           placeholder={
-            refinedChain.chain.at(-1)?.searchPlaceHolder ?? "Search..."
+            refinedChain.chain.at(-1)?.searchPlaceholder ?? "Search..."
           }
         />
       </div>
@@ -281,7 +281,7 @@ export const DataCommand: FC<{
                   variant="outline"
                   className={cn(
                     "text-[10px] text-gray-500 hidden group-data-[selected=true]/item:flex text-xs p-1",
-                    item.fetchSubItems
+                    item.loadItems
                       ? ""
                       : "group-data-[selected=true]/item:hidden"
                   )}
