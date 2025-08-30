@@ -41,6 +41,56 @@
           "target": "components/data-command.tsx"
         }
       ]
+    },
+    {
+      "name": "api-example-data-command",
+      "type": "registry:component",
+      "title": "API example | data-command",
+      "description": "An example implementation of the <DataCommand /> component with a simulated API call",
+      "registryDependencies": ["dialog", "button", "command", "badge"],
+      "meta": { "main": "app/api-example/page.tsx" },
+      "files": [
+        {
+          "path": "registry/data-command/app/api-example/page.tsx",
+          "type": "registry:page",
+          "target": "app/api-example/page.tsx"
+        },
+        {
+          "path": "registry/data-command/app/api-example/layout.tsx",
+          "type": "registry:page",
+          "target": "app/api-example/layout.tsx"
+        },
+        {
+          "path": "registry/data-command/components/data-command.tsx",
+          "type": "registry:component",
+          "target": "components/data-command.tsx"
+        }
+      ]
+    },
+    {
+      "name": "default-chain-example-data-command",
+      "type": "registry:component",
+      "title": "Default Chain example | data-command",
+      "description": "An example implementation of the <DataCommand /> component with a simulated API call",
+      "registryDependencies": ["dialog", "button", "command", "badge"],
+      "meta": { "main": "app/default-chain-example/page.tsx" },
+      "files": [
+        {
+          "path": "registry/data-command/app/default-chain-example/page.tsx",
+          "type": "registry:page",
+          "target": "app/default-chain-example/page.tsx"
+        },
+        {
+          "path": "registry/data-command/app/default-chain-example/layout.tsx",
+          "type": "registry:page",
+          "target": "app/default-chain-example/layout.tsx"
+        },
+        {
+          "path": "registry/data-command/components/data-command.tsx",
+          "type": "registry:component",
+          "target": "components/data-command.tsx"
+        }
+      ]
     }
   ]
 }

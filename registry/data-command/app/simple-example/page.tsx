@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
-import { User, BanknoteIcon, SettingsIcon } from "lucide-react";
+import { BanknoteIcon, SettingsIcon, User } from "lucide-react";
 import { DataCommand } from "../../components/data-command";
 
 export default function SimpleExample() {
