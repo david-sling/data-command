@@ -1,12 +1,11 @@
-import { Analytics } from "@vercel/analytics/next";
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { NuqsAdapter } from "nuqs/adapters/next";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { Suspense } from "react";
 import { Footer } from "@/components/footer";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { formatMetadata } from "@/lib/metadata";
+import { Analytics } from "@vercel/analytics/next";
+import { Geist, Geist_Mono } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next";
+import { Suspense } from "react";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
