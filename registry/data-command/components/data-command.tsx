@@ -1,5 +1,20 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import {
+  Command,
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { cn } from "@/lib/utils";
+import {
+  ChevronRightIcon,
+  LoaderIcon,
+  MoveUpLeftIcon,
+  SearchIcon,
+} from "lucide-react";
 import {
   ComponentRef,
   FC,
@@ -9,16 +24,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { Badge } from "@/components/ui/badge";
-import {
-  Command,
-  CommandEmpty,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import { ChevronRightIcon, LoaderIcon, SearchIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export type FetchCommandDataSubItems = (_props: {
   search: string;
@@ -190,6 +195,11 @@ export const DataCommand: FC<{
     [commandChainKeys, commandHistory, search, items]
   );
 
+  const handleTab = (item: CommandDataItem) => {
+    setCommandChainKeys((prev) => [...prev, item.value]);
+    setSearch("");
+  };
+
   return (
     <Command
       shouldFilter={refinedChain.chain.length === 0}
@@ -206,8 +216,7 @@ export const DataCommand: FC<{
 
         if (e.key === "Tab" && currentFocus?.loadItems) {
           e.preventDefault();
-          setCommandChainKeys((prev) => [...prev, currentFocus.value]);
-          setSearch("");
+          handleTab(currentFocus);
         }
         if (e.key === "Backspace" && !search) {
           e.preventDefault();
@@ -254,7 +263,7 @@ export const DataCommand: FC<{
             item && (
               <CommandItem
                 key={item.value}
-                onSelect={(v) => {
+                onSelect={() => {
                   if (item.onSelect) {
                     item.onSelect();
                     onClose?.();
@@ -269,7 +278,7 @@ export const DataCommand: FC<{
                 <Badge
                   variant="outline"
                   className={cn(
-                    "text-[10px] text-gray-500 hidden group-data-[selected=true]/item:flex text-xs p-1",
+                    "text-[10px] text-gray-500 hidden md:group-data-[selected=true]/item:flex text-xs p-1",
                     item.onSelect
                       ? ""
                       : "group-data-[selected=true]/item:hidden"
@@ -278,6 +287,10 @@ export const DataCommand: FC<{
                   Enter
                 </Badge>
                 <Badge
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleTab(item);
+                  }}
                   variant="outline"
                   className={cn(
                     "text-[10px] text-gray-500 hidden group-data-[selected=true]/item:flex text-xs p-1",
@@ -286,7 +299,8 @@ export const DataCommand: FC<{
                       : "group-data-[selected=true]/item:hidden"
                   )}
                 >
-                  Tab
+                  <span className="hidden md:block">Tab</span>
+                  <MoveUpLeftIcon className="md:hidden text-white" />
                 </Badge>
               </CommandItem>
             )
