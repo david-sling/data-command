@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { File, Folder } from "lucide-react";
 import { CommandDataItem, DataCommand } from "../../components/data-command";
+import { fetchProjects, Project } from "../../api/projects";
 
 const parseProject = (project: Project): CommandDataItem => ({
   label: project.name,
@@ -46,46 +47,3 @@ export default function ApiExample() {
     </Dialog>
   );
 }
-
-interface Project {
-  name: string;
-  id: string;
-  files: string[];
-}
-
-const projects: Project[] = [
-  {
-    name: "Website",
-    id: "project_1",
-    files: ["index.html", "styles.css"],
-  },
-  {
-    name: "Scraper",
-    id: "project_2",
-    files: ["script.go", ".env.example"],
-  },
-  {
-    name: "Scraper 2",
-    id: "project_3",
-    files: ["script.py", ".env.example"],
-  },
-  {
-    name: "Server",
-    id: "project_4",
-    files: ["app.py", "routes.py", ".env.example"],
-  },
-];
-
-// Simulated api call
-const fetchProjects = async (search: string) => {
-  return new Promise<Project[]>((resolve) => {
-    setTimeout(() => {
-      resolve(
-        projects.filter(
-          (item) =>
-            !search || item.name.toLowerCase().includes(search.toLowerCase())
-        )
-      );
-    }, 500);
-  });
-};

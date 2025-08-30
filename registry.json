@@ -64,6 +64,11 @@
           "path": "registry/data-command/components/data-command.tsx",
           "type": "registry:component",
           "target": "components/data-command.tsx"
+        },
+        {
+          "path": "registry/data-command/api/projects.ts",
+          "type": "registry:file",
+          "target": "api/projects.ts"
         }
       ]
     },
@@ -89,6 +94,11 @@
           "path": "registry/data-command/components/data-command.tsx",
           "type": "registry:component",
           "target": "components/data-command.tsx"
+        },
+        {
+          "path": "registry/data-command/api/projects.ts",
+          "type": "registry:file",
+          "target": "api/projects.ts"
         }
       ]
     }
