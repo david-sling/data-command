@@ -103,7 +103,6 @@ export const DataCommand: FC<{
                 key: prevKey,
                 value: { isLoading: true, fetch_type: "one" },
               });
-              console.log("FETCHING ONE CHILD: ", prevKey, curr);
               lastItem
                 .fetchOneSubItem(curr)
                 .then((item) => {
@@ -153,7 +152,6 @@ export const DataCommand: FC<{
               key,
               value: { isLoading: true, fetch_type: "list" },
             });
-            console.log("FETCHING CHILDREN: ", key);
             currentItem
               .fetchSubItems({ search })
               .then((children) => {
@@ -191,13 +189,6 @@ export const DataCommand: FC<{
       ),
     [commandChainKeys, commandHistory, search, items]
   );
-
-  console.log({
-    commandHistory,
-    commandChainKeys,
-    commandKeyToItemMap,
-    refinedChain,
-  });
 
   return (
     <Command
