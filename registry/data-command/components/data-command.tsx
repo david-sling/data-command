@@ -1,11 +1,5 @@
 "use client";
 
-// import {
-//   CaretRightIcon,
-//   MagnifyingGlassIcon,
-//   PlaceholderIcon,
-//   SpinnerIcon,
-// } from "@phosphor-icons/react";
 import {
   ComponentRef,
   FC,
@@ -24,6 +18,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { ChevronRightIcon, LoaderIcon, SearchIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export type FetchCommandDataSubItems = (_props: {
   search: string;
@@ -47,7 +42,7 @@ export interface CommandHistoryItem {
 
 export const DataCommand: FC<{
   items: CommandDataItem[];
-  onClose: () => void;
+  onClose?: () => void;
   defaultCommandChain?: string[];
 }> = ({ items, onClose, defaultCommandChain = [] }) => {
   const listRef = useRef<ComponentRef<typeof CommandList> | null>(null);
@@ -232,7 +227,7 @@ export const DataCommand: FC<{
           const lastItem = refinedChain.chain.at(-1);
           if (lastItem?.onSelect) {
             lastItem.onSelect();
-            onClose();
+            onClose?.();
           }
         }
       }}
@@ -255,10 +250,8 @@ export const DataCommand: FC<{
           </Fragment>
         ))}
         <CommandInput
-          // wrapperClassName="border-0 px-0 flex-1"
           value={search}
           onValueChange={setSearch}
-          // hideIcon
           placeholder={
             refinedChain.chain.at(-1)?.searchPlaceHolder ?? "Search..."
           }
@@ -273,7 +266,7 @@ export const DataCommand: FC<{
                 onSelect={(v) => {
                   if (item.onSelect) {
                     item.onSelect();
-                    onClose();
+                    onClose?.();
                   }
                 }}
                 value={item.value}
@@ -282,22 +275,28 @@ export const DataCommand: FC<{
                 {item.icon}
                 <span>{item.label}</span>
                 <span className="ml-auto" />
-                {item.onSelect && (
-                  <Badge
-                    variant="outline"
-                    className="text-[10px] text-gray-500 hidden group-data-[selected=true]/item:flex text-xs p-1"
-                  >
-                    Enter
-                  </Badge>
-                )}
-                {item.fetchSubItems && (
-                  <Badge
-                    variant="outline"
-                    className="text-[10px] text-gray-500 hidden group-data-[selected=true]/item:flex text-xs p-1"
-                  >
-                    Tab
-                  </Badge>
-                )}
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    "text-[10px] text-gray-500 hidden group-data-[selected=true]/item:flex text-xs p-1",
+                    item.onSelect
+                      ? ""
+                      : "group-data-[selected=true]/item:hidden"
+                  )}
+                >
+                  Enter
+                </Badge>
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    "text-[10px] text-gray-500 hidden group-data-[selected=true]/item:flex text-xs p-1",
+                    item.fetchSubItems
+                      ? ""
+                      : "group-data-[selected=true]/item:hidden"
+                  )}
+                >
+                  Tab
+                </Badge>
               </CommandItem>
             )
         )}

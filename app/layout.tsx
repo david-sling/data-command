@@ -1,31 +1,31 @@
-import { Analytics } from '@vercel/analytics/next'
-import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import './globals.css'
-import { NuqsAdapter } from 'nuqs/adapters/next'
-import { TooltipProvider } from '@/components/ui/tooltip'
-import { Suspense } from 'react'
-import { Footer } from '@/components/footer'
+import { Analytics } from "@vercel/analytics/next";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import { NuqsAdapter } from "nuqs/adapters/next";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Suspense } from "react";
+import { Footer } from "@/components/footer";
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: 'useModalControlQuery',
-  description: 'A hook to control shadcn modal components',
-}
+  title: "DataCommand",
+  description: "A command component built on top of shadcn command",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -43,5 +43,5 @@ export default function RootLayout({
         </TooltipProvider>
       </Suspense>
     </html>
-  )
+  );
 }

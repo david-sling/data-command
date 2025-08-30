@@ -20,8 +20,8 @@
     {
       "name": "simple-example-data-command",
       "type": "registry:component",
-      "title": "Simple example | use-modal-control-query",
-      "description": "A simple implementation of the useModalControlQuery hook",
+      "title": "Simple example | data-command",
+      "description": "A simple implementation of the <DataCommand /> component",
       "registryDependencies": [
         "dialog",
         "button",
@@ -33,11 +33,6 @@
           "path": "registry/data-command/app/simple-example/page.tsx",
           "type": "registry:page",
           "target": "app/simple-example/page.tsx"
-        },
-        {
-          "path": "registry/data-command/app/simple-example/layout.tsx",
-          "type": "registry:page",
-          "target": "app/simple-example/layout.tsx"
         }
       ]
     }

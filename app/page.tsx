@@ -22,7 +22,7 @@ export default function Home() {
           </h1>
         </div>
         <p className="text-muted-foreground">
-          A hook to control shadcn modal components using query params
+          A command component build on top op shadcn command
         </p>
       </header>
       <main className="flex flex-col flex-1 gap-16">
