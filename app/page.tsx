@@ -1,16 +1,15 @@
 import CommandBlock from "@/components/command-tabs";
 import { Example } from "@/components/example";
 import { getAddItemCommands, getMainRegistryFile } from "@/lib/registry";
-import { Logo } from "@/components/logo";
 import ApiExample from "@/registry/data-command/app/api-example/page";
+import DefaultChainExample from "@/registry/data-command/app/default-chain-example/page";
 import SimpleExample from "@/registry/data-command/app/simple-example/page";
 import { RegistryItem } from "shadcn/registry";
-import DefaultChainExample from "@/registry/data-command/app/default-chain-example/page";
 
 import apiExample from "@/public/r/api-example-data-command.json";
 import dataCommand from "@/public/r/data-command.json";
-import simpleExample from "@/public/r/simple-example-data-command.json";
 import defaultChainExample from "@/public/r/default-chain-example-data-command.json";
+import simpleExample from "@/public/r/simple-example-data-command.json";
 
 // This page displays items from the custom registry.
 // You are free to implement this with your own design as needed.
@@ -20,13 +19,14 @@ export default function Home() {
     <div className="max-w-3xl mx-auto flex flex-col min-h-svh px-4 py-8 gap-8">
       <header className="flex flex-col gap-1">
         <div className="mb-2 flex items-center gap-3 md:gap-5 flex-wrap">
-          <Logo className="h-5 w-10 md:h-10 md:w-20" />
           <h1 className="text-2xl md:text-4xl font-bold tracking-tight break-words flex-1 max-w-full">
-            data-command
+            {"<DataCommand/>"}
           </h1>
         </div>
         <p className="text-muted-foreground">
-          A command component build on top op shadcn command
+          A data-driven command component built on shadcn/ui. Add async
+          fetching, nested commands, and instant search to your app with just a
+          few lines of code.
         </p>
       </header>
       <main className="flex flex-col flex-1 gap-16">
@@ -44,7 +44,16 @@ export default function Home() {
 
         <Example
           label="Populating command items from an API"
-          description="You can populate items from an API call using the `loadItems` function. Here is an example with a simulated API call:"
+          description={
+            <>
+              <p>
+                You can fetch and populate command items dynamically by
+                providing a <code>loadItems</code> function. This function
+                should return an array of CommandDataItem objects.
+              </p>
+              <p>Here's an example using a simulated API call:</p>
+            </>
+          }
           name={apiExample.name}
           code={getMainRegistryFile(apiExample as RegistryItem) ?? ""}
         >
@@ -52,8 +61,22 @@ export default function Home() {
         </Example>
 
         <Example
-          label="Opening with a prefilled chain before API call"
-          description="You can open the data-command component with the chain prefilled even if the api calls for fetching the lists haven't been made yet. If you wish to not make a call to your list API, you can use the `loadOneItem` function. This will be invoked if there is no necessity to invoke the `loadItems` function. You also need to pass in the `defaultPath` prop"
+          label="Opening with a prefilled chain before fetching data"
+          description={
+            <>
+              <p>
+                You can initialize the DataCommand with a prefilled chain, even
+                before any API calls are made.
+              </p>
+              <p>
+                If you don't want to load the full list of items, you can
+                provide a <code>loadOneItem</code> function. This will be called
+                only when the full <code>loadItems</code> call isn't required.
+                To use this pattern, make sure to also pass the defaultPath
+                prop.
+              </p>
+            </>
+          }
           name={defaultChainExample.name}
           code={getMainRegistryFile(defaultChainExample as RegistryItem) ?? ""}
         >
