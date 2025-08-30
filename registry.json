@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "acme",
-  "homepage": "https://acme.com",
+  "name": "data-command",
+  "homepage": "https://data-command.davidsling.in",
   "items": [
     {
       "name": "data-command",
