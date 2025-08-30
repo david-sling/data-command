@@ -1,23 +1,82 @@
-# registry-template
+# data-command
 
-You can use the `shadcn` CLI to run your own component registry. Running your own
-component registry allows you to distribute your custom components, hooks, pages, and
-other files to any React project.
+A **data-driven command palette** for React, built on top of [shadcn/ui](https://ui.shadcn.com).  
+It lets you load items from APIs, handle nested selections, and build anything from simple dropdowns to complex command menus.
 
-> [!IMPORTANT]  
-> This template uses Tailwind v3. For Tailwind v4, see [registry-template](https://github.com/shadcn-ui/registry-template-v4). **We recommend using the v4 version for new registries**.
+📖 **Docs:** [https://data-command.davidsling.in](https://data-command.davidsling.in)
 
-## Getting Started
+---
 
-This is a template for creating a custom registry using Next.js.
+## 🚀 Features
 
-- The template uses a `registry.json` file to define components and their files.
-- The `shadcn build` command is used to build the registry.
-- The registry items are served as static files under `public/r/[name].json`.
-- The template also includes a route handler for serving registry items.
-- Every registry item are compatible with the `shadcn` CLI.
-- We have also added v0 integration using the `Open in v0` api.
+- ⚡ Data-driven: load items dynamically from an API or local JSON
+- 📂 Nested selections: prefill and drill down into nested command items
+- 🎨 Built with [shadcn/ui](https://ui.shadcn.com)
+- 🔌 Easy to integrate into any React project
 
-## Documentation
+---
 
-Visit the [shadcn documentation](https://ui.shadcn.com/docs/registry) to view the full documentation.
+## 📦 Installation
+
+Using [shadcn/ui CLI](https://ui.shadcn.com/docs/installation):
+
+```bash
+pnpm dlx shadcn@latest add https://data-command.davidsling.in/r/data-command.json
+```
+
+---
+
+## 📖 Documentation
+
+Full docs: [https://data-command.davidsling.in](https://data-command.davidsling.in)
+
+👉 The docs include an **“Open with v0”** button so you can try it out interactively.
+
+---
+
+## ⚡ Quick Example
+
+```tsx
+import { DataCommand } from "@/components/data-command";
+
+function Example() {
+  <DataCommand
+    items={[
+      {
+        icon: <User />,
+        label: "Profile",
+        value: "profile",
+        loadItems: async () => [
+          {
+            label: "Settings",
+            value: "settings",
+            icon: <SettingsIcon />,
+            onSelect: () => alert("You have selected: profile/settings"),
+          },
+        ],
+      },
+      {
+        icon: <BanknoteIcon />,
+        label: "Billing",
+        value: "billing",
+        onSelect: () => alert("You have selected: billing"),
+      },
+    ]}
+  />;
+}
+```
+
+More advanced examples available in the [documentation](https://data-command.davidsling.in)
+
+---
+
+## 🤝 Contributing
+
+The code isn’t very polished right now — contributions are very welcome!  
+If you’d like to help improve the component, feel free to open a PR or start a discussion.
+
+---
+
+## 📜 License
+
+MIT
