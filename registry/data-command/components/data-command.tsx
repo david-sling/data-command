@@ -293,7 +293,7 @@ export const DataCommand: FC<{
                   }}
                   variant="outline"
                   className={cn(
-                    "text-[10px] text-gray-500 hidden group-data-[selected=true]/item:flex text-xs p-1",
+                    "text-[10px] text-gray-500 border-0 md:hidden group-data-[selected=true]/item:flex text-xs p-1",
                     item.loadItems
                       ? ""
                       : "group-data-[selected=true]/item:hidden"
