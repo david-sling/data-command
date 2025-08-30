@@ -36,7 +36,7 @@ export default function Home() {
         </div>
         <Example
           label="Usage"
-          description={<p>Here's a minimal example:</p>}
+          description={<p>Here&apos;s a minimal example:</p>}
           name={simpleExample.name}
           code={getMainRegistryFile(simpleExample as RegistryItem) ?? ""}
         >
@@ -52,7 +52,7 @@ export default function Home() {
                 providing a <code>loadItems</code> function. This function
                 should return an array of <code>CommandDataItem</code> objects.
               </p>
-              <p>Here's an example using a simulated API call:</p>
+              <p>Here&apos;s an example using a simulated API call:</p>
             </>
           }
           name={apiExample.name}
@@ -70,11 +70,11 @@ export default function Home() {
                 before any API calls are made.
               </p>
               <p>
-                If you don't want to load the full list of items, you can
+                If you don&apos;t want to load the full list of items, you can
                 provide a <code>loadOneItem</code> function. This will be called
-                only when the full <code>loadItems</code> call isn't required.
-                To use this pattern, make sure to also pass the defaultPath
-                prop.
+                only when the full <code>loadItems</code> call isn&apos;t
+                required. To use this pattern, make sure to also pass the
+                defaultPath prop.
               </p>
             </>
           }
