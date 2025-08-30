@@ -1,24 +1,29 @@
-'use client'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
-import { Check, Clipboard, SquareTerminal } from 'lucide-react'
-import { useState } from 'react'
+"use client";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { Check, Clipboard, SquareTerminal } from "lucide-react";
+import { useState } from "react";
+import { parseAsString, useQueryState } from "nuqs";
 
 interface CommandItem {
-  label: string
-  command: string
+  label: string;
+  command: string;
 }
 
 interface CommandBlockProps {
-  title?: string
-  command?: string
-  commands?: CommandItem[]
-  defaultValue?: string
-  showTerminalIcon?: boolean
-  className?: string
+  title?: string;
+  command?: string;
+  commands?: CommandItem[];
+  defaultValue?: string;
+  showTerminalIcon?: boolean;
+  className?: string;
 }
 
 function SingleCommandBlock({
@@ -27,32 +32,38 @@ function SingleCommandBlock({
   showTerminalIcon = true,
   className,
 }: {
-  title?: string
-  command: string
-  showTerminalIcon?: boolean
-  className?: string
+  title?: string;
+  command: string;
+  showTerminalIcon?: boolean;
+  className?: string;
 }) {
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState(false);
 
   const copyToClipboard = async (text: string) => {
     try {
-      await navigator.clipboard.writeText(text)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy text: ', err)
+      console.error("Failed to copy text: ", err);
     }
-  }
+  };
 
   return (
-    <div className={cn('w-full max-w-2xl mx-auto', className)}>
+    <div className={cn("w-full max-w-2xl mx-auto", className)}>
       <div className="bg-card rounded-md border">
         {(title || showTerminalIcon) && (
           <>
             <div className="flex items-center justify-between px-4 py-2">
               <div className="flex items-center space-x-2">
-                {showTerminalIcon && <SquareTerminal className="text-muted-foreground" size={20} />}
-                {title && <span className="font-medium text-muted-foreground">{title}</span>}
+                {showTerminalIcon && (
+                  <SquareTerminal className="text-muted-foreground" size={20} />
+                )}
+                {title && (
+                  <span className="font-medium text-muted-foreground">
+                    {title}
+                  </span>
+                )}
               </div>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -67,7 +78,7 @@ function SingleCommandBlock({
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{copied ? 'Copied!' : 'Copy to Clipboard'}</p>
+                  <p>{copied ? "Copied!" : "Copy to Clipboard"}</p>
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -81,7 +92,7 @@ function SingleCommandBlock({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function MultiCommandBlock({
@@ -90,28 +101,34 @@ function MultiCommandBlock({
   showTerminalIcon = true,
   className,
 }: {
-  commands: CommandItem[]
-  defaultValue?: string
-  showTerminalIcon?: boolean
-  className?: string
+  commands: CommandItem[];
+  defaultValue?: string;
+  showTerminalIcon?: boolean;
+  className?: string;
 }) {
-  const [copied, setCopied] = useState(false)
-  const [activeTab, setActiveTab] = useState(defaultValue || commands[0]?.label)
+  const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useQueryState(
+    "package-manager",
+    parseAsString
+      .withDefault(defaultValue || commands[0]?.label)
+      .withOptions({ history: "replace" })
+  );
 
   const copyToClipboard = async (text: string) => {
     try {
-      await navigator.clipboard.writeText(text)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy text: ', err)
+      console.error("Failed to copy text: ", err);
     }
-  }
+  };
 
-  const activeCommand = commands.find((cmd) => cmd.label === activeTab)?.command || ''
+  const activeCommand =
+    commands.find((cmd) => cmd.label === activeTab)?.command || "";
 
   return (
-    <div className={cn('w-full mx-auto', className)}>
+    <div className={cn("w-full mx-auto", className)}>
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
@@ -120,7 +137,10 @@ function MultiCommandBlock({
         <TabsList className="flex w-full bg-card justify-between items-center px-2 py-1 pt-2 my-1 rounded-t-md">
           <div className="flex items-center">
             {showTerminalIcon && (
-              <SquareTerminal className="mx-2 text-muted-foreground" size={20} />
+              <SquareTerminal
+                className="mx-2 text-muted-foreground"
+                size={20}
+              />
             )}
             <div className="flex">
               {commands.map((tab) => (
@@ -147,7 +167,7 @@ function MultiCommandBlock({
               </Button>
             </TooltipTrigger>
             <TooltipContent>
-              <p>{copied ? 'Copied!' : 'Copy to Clipboard'}</p>
+              <p>{copied ? "Copied!" : "Copy to Clipboard"}</p>
             </TooltipContent>
           </Tooltip>
         </TabsList>
@@ -165,19 +185,19 @@ function MultiCommandBlock({
         ))}
       </Tabs>
     </div>
-  )
+  );
 }
 
 export default function CommandBlock(props: CommandBlockProps) {
-  const { command, commands, ...rest } = props
+  const { command, commands, ...rest } = props;
 
   if (command) {
-    return <SingleCommandBlock command={command} {...rest} />
+    return <SingleCommandBlock command={command} {...rest} />;
   }
 
   if (commands && commands.length > 0) {
-    return <MultiCommandBlock commands={commands} {...rest} />
+    return <MultiCommandBlock commands={commands} {...rest} />;
   }
 
-  return null
+  return null;
 }
