@@ -8,7 +8,7 @@
       "type": "registry:component",
       "title": "DataCommand",
       "description": "data-command",
-      "registryDependencies": ["command"],
+      "registryDependencies": ["command", "badge"],
       "files": [
         {
           "path": "registry/data-command/components/data-command.tsx",
@@ -22,17 +22,18 @@
       "type": "registry:component",
       "title": "Simple example | data-command",
       "description": "A simple implementation of the <DataCommand /> component",
-      "registryDependencies": [
-        "dialog",
-        "button",
-        "https://data-command.davidsling.in/r/data-command.json"
-      ],
+      "registryDependencies": ["dialog", "button", "command", "badge"],
       "meta": { "main": "app/simple-example/page.tsx" },
       "files": [
         {
           "path": "registry/data-command/app/simple-example/page.tsx",
           "type": "registry:page",
           "target": "app/simple-example/page.tsx"
+        },
+        {
+          "path": "registry/data-command/components/data-command.tsx",
+          "type": "registry:component",
+          "target": "components/data-command.tsx"
         }
       ]
     }
