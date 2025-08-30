@@ -1,0 +1,314 @@
+"use client";
+
+// import {
+//   CaretRightIcon,
+//   MagnifyingGlassIcon,
+//   PlaceholderIcon,
+//   SpinnerIcon,
+// } from "@phosphor-icons/react";
+import {
+  ComponentRef,
+  FC,
+  Fragment,
+  ReactNode,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { Badge } from "@/components/ui/badge";
+import {
+  Command,
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { ChevronRightIcon, LoaderIcon, SearchIcon } from "lucide-react";
+
+export type FetchCommandDataSubItems = (_props: {
+  search: string;
+}) => Promise<CommandDataItem[]>;
+
+export interface CommandDataItem {
+  label: ReactNode;
+  value: string;
+  fetchSubItems?: FetchCommandDataSubItems;
+  fetchOneSubItem?: (_key: string) => Promise<CommandDataItem>;
+  onSelect?: () => void;
+  icon?: ReactNode;
+  searchPlaceHolder?: string;
+}
+
+export interface CommandHistoryItem {
+  list?: string[];
+  isLoading?: boolean;
+  fetch_type: "list" | "one";
+}
+
+export const DataCommand: FC<{
+  items: CommandDataItem[];
+  onClose: () => void;
+  defaultCommandChain?: string[];
+}> = ({ items, onClose, defaultCommandChain = [] }) => {
+  const listRef = useRef<ComponentRef<typeof CommandList> | null>(null);
+  const [commandChainKeys, setCommandChainKeys] =
+    useState<string[]>(defaultCommandChain);
+  const [search, setSearch] = useState("");
+  const fetching = useRef(new Map<string, boolean | undefined>());
+  const [commandHistory, setCommandHistory] = useState<
+    Record<string, CommandHistoryItem | undefined>
+  >({});
+
+  const appendCommandHistory = ({
+    key,
+    value,
+  }: {
+    key: string;
+    value: CommandHistoryItem;
+  }) => {
+    fetching.current.set(key, !!value.isLoading);
+    setCommandHistory((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const commandKeyToItemMap = useRef(
+    new Map<string, CommandDataItem | undefined>()
+  );
+
+  const addCommandItemToMap = (itemKey: string, item: CommandDataItem) => {
+    commandKeyToItemMap.current.set(itemKey, item);
+    return itemKey;
+  };
+
+  const addComandItemsToMap = (
+    chainKey: string,
+    commandItems: CommandDataItem[]
+  ) =>
+    commandItems.map((item) =>
+      addCommandItemToMap([chainKey, item.value].join("."), item)
+    );
+
+  const refinedChain = useMemo(
+    () =>
+      commandChainKeys.reduce(
+        (acc, curr, idx, arr) => {
+          const prevKey = acc.chain.map((i) => i?.value).join(".");
+          const chainKey = [prevKey, curr].filter(Boolean).join(".");
+          const currentItem =
+            acc.list.find((i) => i?.value === curr) ||
+            commandKeyToItemMap.current.get(chainKey);
+          const lastItem = acc.chain.at(-1);
+
+          if (!currentItem) {
+            if (
+              lastItem?.fetchOneSubItem &&
+              !commandHistory[prevKey] &&
+              !fetching.current.get(prevKey)
+            ) {
+              appendCommandHistory({
+                key: prevKey,
+                value: { isLoading: true, fetch_type: "one" },
+              });
+              console.log("FETCHING ONE CHILD: ", prevKey, curr);
+              lastItem
+                .fetchOneSubItem(curr)
+                .then((item) => {
+                  const address = addCommandItemToMap(chainKey, item);
+                  appendCommandHistory({
+                    key: prevKey,
+                    value: {
+                      list: [address],
+                      isLoading: false,
+                      fetch_type: "one",
+                    },
+                  });
+                })
+                .catch(() => {
+                  appendCommandHistory({
+                    key: prevKey,
+                    value: { isLoading: false, fetch_type: "one" },
+                  });
+                });
+            }
+            return {
+              ...acc,
+              chain: [
+                ...acc.chain,
+                {
+                  label: <LoaderIcon className="animate-spin" />,
+                  value: curr,
+                } as CommandDataItem,
+              ],
+              list: [],
+            };
+          }
+          addCommandItemToMap(chainKey, currentItem);
+
+          const isLastItem = idx === arr.length - 1;
+          const key = isLastItem
+            ? [chainKey, search].filter(Boolean).join(":")
+            : chainKey;
+
+          if (
+            currentItem.fetchSubItems &&
+            !(commandHistory[key]?.fetch_type === "list") &&
+            !fetching.current.get(key) &&
+            (isLastItem || !currentItem.fetchOneSubItem)
+          ) {
+            appendCommandHistory({
+              key,
+              value: { isLoading: true, fetch_type: "list" },
+            });
+            console.log("FETCHING CHILDREN: ", key);
+            currentItem
+              .fetchSubItems({ search })
+              .then((children) => {
+                const childAddresses = addComandItemsToMap(chainKey, children);
+                appendCommandHistory({
+                  key,
+                  value: {
+                    list: childAddresses,
+                    isLoading: false,
+                    fetch_type: "list",
+                  },
+                });
+              })
+              .catch(() => {
+                appendCommandHistory({
+                  key,
+                  value: { isLoading: false, fetch_type: "list" },
+                });
+              });
+          }
+          return {
+            chain: [...acc.chain, currentItem],
+            list:
+              commandHistory[key]?.list?.map((childKey) =>
+                commandKeyToItemMap.current.get(childKey)
+              ) ?? [],
+            isLoading: !!commandHistory[key]?.isLoading,
+          };
+        },
+        {
+          chain: [] as CommandDataItem[],
+          list: items as (CommandDataItem | undefined)[],
+          isLoading: false,
+        }
+      ),
+    [commandChainKeys, commandHistory, search, items]
+  );
+
+  console.log({
+    commandHistory,
+    commandChainKeys,
+    commandKeyToItemMap,
+    refinedChain,
+  });
+
+  return (
+    <Command
+      shouldFilter={refinedChain.chain.length === 0}
+      onKeyDown={(e) => {
+        const currentFocusName = Array.from(
+          listRef.current?.children[0]?.children ?? []
+        )
+          .find((el) => el.ariaSelected === "true")
+          ?.getAttribute("data-value");
+
+        const currentFocus = refinedChain.list.find(
+          (i) => i?.value === currentFocusName
+        );
+
+        if (e.key === "Tab" && currentFocus?.fetchSubItems) {
+          e.preventDefault();
+          setCommandChainKeys((prev) => [...prev, currentFocus.value]);
+          setSearch("");
+        }
+        if (e.key === "Backspace" && !search) {
+          e.preventDefault();
+          setCommandChainKeys((p) => p.slice(0, p.length - 1));
+        }
+        if (e.key === "Enter" && !search && !currentFocus) {
+          e.preventDefault();
+          const lastItem = refinedChain.chain.at(-1);
+          if (lastItem?.onSelect) {
+            lastItem.onSelect();
+            onClose();
+          }
+        }
+      }}
+    >
+      <div className="flex gap-1 p-1 items-center border-b">
+        <SearchIcon className="ml-2 text-gray-500 size-4" />
+        {refinedChain.chain.map((i, idx) => (
+          <Fragment key={i.value}>
+            <Badge
+              onClick={() =>
+                setCommandChainKeys((prev) => prev.slice(0, idx + 1))
+              }
+              className="cursor-pointer"
+              variant="secondary"
+            >
+              {i.icon}
+              {i.label}
+            </Badge>
+            <ChevronRightIcon className="text-gray-500" />
+          </Fragment>
+        ))}
+        <CommandInput
+          // wrapperClassName="border-0 px-0 flex-1"
+          value={search}
+          onValueChange={setSearch}
+          // hideIcon
+          placeholder={
+            refinedChain.chain.at(-1)?.searchPlaceHolder ?? "Search..."
+          }
+        />
+      </div>
+      <CommandList ref={listRef} className="p-1">
+        {refinedChain.list.map(
+          (item) =>
+            item && (
+              <CommandItem
+                key={item.value}
+                onSelect={(v) => {
+                  if (item.onSelect) {
+                    item.onSelect();
+                    onClose();
+                  }
+                }}
+                value={item.value}
+                className="cursor-pointer group/item"
+              >
+                {item.icon}
+                <span>{item.label}</span>
+                <span className="ml-auto" />
+                {item.onSelect && (
+                  <Badge
+                    variant="outline"
+                    className="text-[10px] text-gray-500 hidden group-data-[selected=true]/item:flex text-xs p-1"
+                  >
+                    Enter
+                  </Badge>
+                )}
+                {item.fetchSubItems && (
+                  <Badge
+                    variant="outline"
+                    className="text-[10px] text-gray-500 hidden group-data-[selected=true]/item:flex text-xs p-1"
+                  >
+                    Tab
+                  </Badge>
+                )}
+              </CommandItem>
+            )
+        )}
+      </CommandList>
+      {refinedChain.isLoading ? (
+        <LoaderIcon className="animate-spin text-center mx-auto mt-6 mb-8 size-6" />
+      ) : (
+        <CommandEmpty className="flex flex-col items-center p-5 gap-2 text-gray-500">
+          <p>No results</p>
+        </CommandEmpty>
+      )}
+    </Command>
+  );
+};

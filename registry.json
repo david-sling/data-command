@@ -4,14 +4,40 @@
   "homepage": "https://acme.com",
   "items": [
     {
-      "name": "button",
+      "name": "data-command",
       "type": "registry:component",
-      "title": "Button",
-      "description": "A simple button component",
+      "title": "DataCommand",
+      "description": "data-command",
+      "registryDependencies": ["command"],
       "files": [
         {
-          "path": "registry/test.tsx",
-          "type": "registry:component"
+          "path": "registry/data-command/components/data-command.tsx",
+          "type": "registry:component",
+          "target": "components/data-command.tsx"
+        }
+      ]
+    },
+    {
+      "name": "simple-example-data-command",
+      "type": "registry:component",
+      "title": "Simple example | use-modal-control-query",
+      "description": "A simple implementation of the useModalControlQuery hook",
+      "registryDependencies": [
+        "dialog",
+        "button",
+        "https://data-command.davidsling.in/r/data-command.json"
+      ],
+      "meta": { "main": "app/simple-example/page.tsx" },
+      "files": [
+        {
+          "path": "registry/data-command/app/simple-example/page.tsx",
+          "type": "registry:page",
+          "target": "app/simple-example/page.tsx"
+        },
+        {
+          "path": "registry/data-command/app/simple-example/layout.tsx",
+          "type": "registry:page",
+          "target": "app/simple-example/layout.tsx"
         }
       ]
     }
