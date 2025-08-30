@@ -14,6 +14,7 @@ import {
   LoaderIcon,
   MoveUpLeftIcon,
   SearchIcon,
+  XIcon,
 } from "lucide-react";
 import {
   ComponentRef,
@@ -256,6 +257,15 @@ export const DataCommand: FC<{
             refinedChain.chain.at(-1)?.searchPlaceholder ?? "Search..."
           }
         />
+        {(search || commandChainKeys.length > 0) && (
+          <XIcon
+            onClick={() => {
+              setSearch("");
+              setCommandChainKeys([]);
+            }}
+            className="ml-auto size-4 mr-3 z-20 text-gray-500 hover:text-white cursor-pointer"
+          />
+        )}
       </div>
       <CommandList ref={listRef} className="p-1">
         {refinedChain.list.map(
