@@ -6,11 +6,11 @@ import DefaultChainExample from "@/registry/data-command/app/default-chain-examp
 import SimpleExample from "@/registry/data-command/app/simple-example/page";
 import { RegistryItem } from "shadcn/registry";
 
+import { Logo } from "@/components/logo";
 import apiExample from "@/public/r/api-example-data-command.json";
 import dataCommand from "@/public/r/data-command.json";
 import defaultChainExample from "@/public/r/default-chain-example-data-command.json";
 import simpleExample from "@/public/r/simple-example-data-command.json";
-import { Logo } from "@/components/logo";
 
 // This page displays items from the custom registry.
 // You are free to implement this with your own design as needed.

@@ -6,6 +6,7 @@ import { NuqsAdapter } from "nuqs/adapters/next";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Suspense } from "react";
 import { Footer } from "@/components/footer";
+import { formatMetadata } from "@/lib/metadata";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,10 +18,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+export const metadata = formatMetadata({
   title: "DataCommand",
-  description: "A command component built on top of shadcn command",
-};
+  description:
+    " A data-driven command component built on top of shadcn/ui Add async fetching, nested commands, and instant search to your app with just a few lines of code.",
+  image: "/cover.png",
+});
 
 export default function RootLayout({
   children,
