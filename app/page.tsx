@@ -18,15 +18,15 @@ export default function Home() {
   return (
     <div className="max-w-3xl mx-auto flex flex-col min-h-svh px-4 py-8 gap-8">
       <header className="flex flex-col gap-1">
-        <div className="mb-2 flex items-center gap-3 md:gap-5 flex-wrap">
-          <h1 className="text-2xl md:text-4xl font-bold tracking-tight break-words flex-1 max-w-full">
-            {"<DataCommand/>"}
-          </h1>
-        </div>
+        <h1 className="text-2xl md:text-4xl font-bold tracking-tight break-words flex-1 max-w-full">
+          {"<DataCommand/>"}
+        </h1>
         <p className="text-muted-foreground">
-          A data-driven command component built on shadcn/ui. Add async
-          fetching, nested commands, and instant search to your app with just a
-          few lines of code.
+          A data-driven command component built on top of <code>shadcn/ui</code>
+          .
+          <br />
+          Add async fetching, nested commands, and instant search to your app
+          with just a few lines of code.
         </p>
       </header>
       <main className="flex flex-col flex-1 gap-16">
@@ -36,6 +36,7 @@ export default function Home() {
         </div>
         <Example
           label="Usage"
+          description={<p>Here's a minimal example:</p>}
           name={simpleExample.name}
           code={getMainRegistryFile(simpleExample as RegistryItem) ?? ""}
         >
@@ -49,7 +50,7 @@ export default function Home() {
               <p>
                 You can fetch and populate command items dynamically by
                 providing a <code>loadItems</code> function. This function
-                should return an array of CommandDataItem objects.
+                should return an array of <code>CommandDataItem</code> objects.
               </p>
               <p>Here's an example using a simulated API call:</p>
             </>
