@@ -6,8 +6,8 @@
     {
       "name": "data-command",
       "type": "registry:component",
-      "title": "DataCommand",
-      "description": "data-command",
+      "title": "DataCommand Component",
+      "description": "A data-driven command palette built on top of shadcn/ui with async loading, nested commands, and instant search.",
       "registryDependencies": ["command", "badge"],
       "files": [
         {
@@ -20,8 +20,8 @@
     {
       "name": "simple-example-data-command",
       "type": "registry:component",
-      "title": "Simple example | data-command",
-      "description": "A simple implementation of the <DataCommand /> component",
+      "title": "DataCommand - Simple Example",
+      "description": "A minimal setup of the <DataCommand /> component, showing how to use it with static items.",
       "registryDependencies": ["dialog", "button", "command", "badge"],
       "meta": { "main": "app/simple-example/page.tsx" },
       "files": [
@@ -45,8 +45,8 @@
     {
       "name": "api-example-data-command",
       "type": "registry:component",
-      "title": "API example | data-command",
-      "description": "An example implementation of the <DataCommand /> component with a simulated API call",
+      "title": "DataCommand - API Example",
+      "description": "An example of <DataCommand /> fetching and populating items from an API using the loadItems function.",
       "registryDependencies": ["dialog", "button", "command", "badge"],
       "meta": { "main": "app/api-example/page.tsx" },
       "files": [
@@ -75,8 +75,8 @@
     {
       "name": "default-chain-example-data-command",
       "type": "registry:component",
-      "title": "Default Chain example | data-command",
-      "description": "An example implementation of the <DataCommand /> component with a simulated API call",
+      "title": "DataCommand - Default Chain Example",
+      "description": "An example of <DataCommand /> opening with a prefilled command chain using defaultPath and loadOneItem.",
       "registryDependencies": ["dialog", "button", "command", "badge"],
       "meta": { "main": "app/default-chain-example/page.tsx" },
       "files": [
