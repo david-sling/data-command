@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
 import {
+  ArrowRight,
   ChevronRightIcon,
   LoaderIcon,
   MoveUpLeftIcon,
@@ -290,13 +291,14 @@ export const DataCommand: FC<{
                 <Badge
                   variant="outline"
                   className={cn(
-                    "text-[10px] text-gray-500 hidden md:group-data-[selected=true]/item:flex text-xs p-1",
-                    item.onSelect
-                      ? ""
-                      : "group-data-[selected=true]/item:hidden"
+                    "text-[10px] text-gray-500 border-0 hidden text-xs p-1",
+                    item.onSelect ? "flex" : "hidden"
                   )}
                 >
-                  Enter
+                  <span className="hidden md:group-data-[selected=true]/item:block">
+                    Enter
+                  </span>
+                  <ArrowRight className="md:hidden text-white" />
                 </Badge>
                 <Badge
                   onClick={(e) => {
@@ -305,13 +307,13 @@ export const DataCommand: FC<{
                   }}
                   variant="outline"
                   className={cn(
-                    "text-[10px] text-gray-500 border-0 md:hidden group-data-[selected=true]/item:flex text-xs p-1",
-                    item.loadItems
-                      ? ""
-                      : "group-data-[selected=true]/item:hidden"
+                    "text-[10px] text-gray-500 border-0 hidden text-xs p-1",
+                    item.loadItems ? "flex" : "hidden"
                   )}
                 >
-                  <span className="hidden md:block">Tab</span>
+                  <span className="hidden md:group-data-[selected=true]/item:block">
+                    Tab
+                  </span>
                   <MoveUpLeftIcon className="md:hidden text-white" />
                 </Badge>
               </CommandItem>
