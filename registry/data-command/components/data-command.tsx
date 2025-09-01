@@ -289,18 +289,6 @@ export const DataCommand: FC<{
                 <span>{item.label}</span>
                 <span className="ml-auto" />
                 <Badge
-                  variant="outline"
-                  className={cn(
-                    "text-[10px] text-gray-500 border-0 hidden text-xs p-1",
-                    item.onSelect ? "flex" : "hidden"
-                  )}
-                >
-                  <span className="hidden md:group-data-[selected=true]/item:block">
-                    Enter
-                  </span>
-                  <ArrowRight className="md:hidden text-white" />
-                </Badge>
-                <Badge
                   onClick={(e) => {
                     e.stopPropagation();
                     handleTab(item);
@@ -314,7 +302,19 @@ export const DataCommand: FC<{
                   <span className="hidden md:group-data-[selected=true]/item:block">
                     Tab
                   </span>
-                  <MoveUpLeftIcon className="md:hidden text-white" />
+                  <MoveUpLeftIcon className="md:hidden text-white/50" />
+                </Badge>
+                <Badge
+                  variant="outline"
+                  className={cn(
+                    "text-[10px] text-gray-500 border-0 hidden text-xs p-1",
+                    item.onSelect ? "flex" : "hidden"
+                  )}
+                >
+                  <span className="hidden md:group-data-[selected=true]/item:block">
+                    Enter
+                  </span>
+                  <ArrowRight className="md:hidden text-white/50" />
                 </Badge>
               </CommandItem>
             )
